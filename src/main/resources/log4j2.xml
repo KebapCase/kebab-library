@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    <Properties>
+        <Property name="logsDir">logs</Property>
+        <Property name="PID">????</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %p --- [%25.25t] %-70.70c{1.} : %m%n%xwEx"/>
+        </Console>
+
+        <RollingFile name="RollingFile" fileName="${logsDir}/app.log" append="true"
+                     filePattern="${logsDir}/$${date:yyyy}/$${date:MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %p --- [%25.25t] %-70.70c{1.} : %m%n%xwEx"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="128 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${logsDir}" maxDepth="5">log
+                    <IfLastModified age="30D"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+
+    <Loggers>
+        <asyncLogger name="com.kebab.platform.stats" level="warn">
+            <AppenderRef ref="Console"/>
+        </asyncLogger>
+
+        <asyncLogger name="org.springframework.test" level="warn">
+            <AppenderRef ref="Console"/>
+        </asyncLogger>
+
+        <asyncLogger name="org.springframework.orm" level="warn">
+            <AppenderRef ref="Console"/>
+        </asyncLogger>
+
+        <asyncLogger name="org.springframework.aop" level="warn">
+            <AppenderRef ref="Console"/>
+        </asyncLogger>
+
+        <asyncRoot level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </asyncRoot>
+    </Loggers>
+</Configuration>
