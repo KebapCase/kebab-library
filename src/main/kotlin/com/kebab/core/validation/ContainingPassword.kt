@@ -10,7 +10,7 @@ import java.io.Serializable
  */
 interface ContainingPassword : Serializable {
 
-    var password: String
+    var password: String?
 
-    var confirmPassword: String
+    var confirmPassword: String?
 }
